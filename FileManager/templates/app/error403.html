@@ -1,0 +1,25 @@
+
+{% extends 'base.html' %}
+{% block tbody %}
+    <div>
+        <h1>Error Page</h1>
+    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+
+              <div class="widget-content">
+                <div class="btn-error">
+                  <h1>没有权限 ...</h1>
+                    </br>
+                  <a class="btn btn-warning btn-big"  href="{% url 'index' %}">Back to last page</a> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Footer-part-->
+
+{% endblock %}

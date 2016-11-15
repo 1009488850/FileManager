@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" oncontextmenu=self.event.returnValue=false onselectstart="return false">
+{#<html xmlns="http://www.w3.org/1999/html">#}
+{#<html>#}
+<head>
+	<title>丝路通集团文件管理系统&nbsp;&nbsp;&nbsp;</title>
+	<meta name="keywords" content="Bootstrap模版,Bootstrap模版下载,Bootstrap教程,Bootstrap中文,后台管理系统模版,后台模版下载,后台管理系统,后台管理模版" />
+	<meta name="description" content="JS代码网提供Bootstrap模版,后台管理系统模版,后台管理界面,Bootstrap教程,Bootstrap中文翻译等相关Bootstrap插件下载" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="/static/detaildemo/css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet">
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="/static/detaildemo/css/compiled/layout.css">
+
+    <!-- libraries -->
+    <link href="/static/detaildemo/css/lib/font-awesome.css" type="text/css" rel="stylesheet" />
+    <link href="/static/detaildemo/css/lib/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="/static/detaildemo/css/compiled/datatables.css" type="text/css" media="screen" />
+
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <style>
+        .hide-top{
+            display: none;
+        }
+        .icon-top{
+            background: url(/static/detaildemo/img/bgs/index-bg_20160225.png) no-repeat;
+            background-position: -40px -385px;
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            overflow: hidden;
+        }
+        .back-top {
+            position: fixed;
+            right: 0px;
+            bottom: 100px;
+            width: 50px;
+        }
+        .gotop{
+            position: relative;
+            width: 48px;
+            height: 38px;
+            border: 1px solid #ccd3e4;
+            color: #fff;
+            text-align: center;
+        }
+        .gotop .icon-top{
+            margin-top: 10px;
+        }
+        .gotop:hover:after {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: " ";
+            position: absolute;
+            background-color: #3b5998;
+        }
+
+        .content-top {
+            visibility: hidden;
+            width: 30px;
+            height: 32px;
+            padding: 3px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 100;
+            text-align: center;
+            line-height: 16px;
+            top: 0;
+            position: absolute;
+        }
+
+        .gotop:hover .content-top {
+            visibility: visible;
+        }
+    </style>
+</head>
+<body oncontextmenu=self.event.returnValue=false onselectstart="return false">
+{#<body>#}
+    {% csrf_token %}
+    <div id="first" class=""></div>
+    <!-- 窗体上部菜单框 -->
+    <header class="navbar navbar-inverse" role="banner">
+        <div class="navbar-header" style="  margin-left: 70px;">
+               <a class="navbar-brand" href="">丝路通集团文件管理系统</a>
+        </div>
+        <ul class="nav navbar-nav pull-right hidden-xs">
+            <!-- 如果用户未登陆则显示login信息 -->
+            {% if not request.user.is_authenticated %}
+                <li class="settings hidden-xs hidden-sm"  style="margin-right: 60px">
+                    <a href="{% url 'login' %}">
+                        <i>Login</i>
+                    </a>
+                </li>
+            <!-- 如果用户已登录则显示修改密码、登出等信息 -->
+            {% else %}
+                <li class="dropdown" style="margin-right: 60px">
+                    <a href="#" class="dropdown-toggle hidden-xs hidden-sm" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-user"></span>&nbsp;{{ request.user.userprofile.user }}
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu " role="menu" aria-labelledby="dropdownMenuDivider">
+                        <li><a href="{% url 'changepwd' %}" style="color: #4faeef">Change Password</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li><a href="{% url 'logout' %}" style="color: red">Logout</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+        </ul>
+    </header>
+    <!-- end -->
+
+    {% block window %}
+    <!-- 窗体左侧菜单栏 -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+            <li>                
+                <a href="{% url 'home' %}">
+                    <i class="icon-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="active">
+                <a class="dropdown-toggle" href="{% url 'index' %}">
+                    <div class="pointer">
+                        <div class="arrow"></div>
+                        <div class="arrow_border"></div>
+                    </div>
+                    <i class="icon-th-large"></i>
+                    <span>Tables</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- end -->
+    {% endblock %}
+
+
+    <!-- main container -->
+    <div class="content">
+
+
+    {% block uploadfile %}
+        <!-- 窗体右侧点击上传图片功能 -->
+        <div class="upload" >
+            {% if request.user.is_authenticated and perm_dic_ret.2 %}
+              <!-- 用户已登录可点击-->
+
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                      <span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;&nbsp;<span>上传图片</span>
+                    </button>
+            {% else %}
+              <!-- 用户未登陆不可点击-->
+                    <button disabled="disabled" type="button" class="btn btn-primary btn-lg">
+                      <span class="glyphicon glyphicon-upload"></span>&nbsp;&nbsp;&nbsp;<span>上传图片</span>
+                    </button>
+            {% endif %}
+        </div>
+    {% endblock %}
+
+        <!-- 返回顶部 -->
+        <div class="back-top hide-top">
+            <div class="gotop" onclick="GoTop();">
+                <a class="icon-top"></a>
+                <div class="content-top">
+                    <span>返回</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 切换黑灰皮肤设置 -->
+        <div class="skins-nav">
+            <a href="#" class="skin first_nav selected">
+                <span class="icon"></span><span class="text">Default</span>
+            </a>
+            <a href="#" class="skin second_nav" data-file="/static/detaildemo/css/compiled/skins/dark.css">
+                <span class="icon"></span><span class="text">Dark skin</span>
+            </a>
+        </div>
+
+        <!-- 制定全局block块，用于子板继承及修改-->
+        <div id="pad-wrapper" class="datatables-page">
+            <div class="row">
+                <div id="t" class="col-md-12">
+                    {% block tbody %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        <!-- endblock tbody-->
+
+    </div>
+    <!-- end main container -->
+
+
+
+	<!-- 上传图片模态对话框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">上传图片</h4>
+          </div>
+
+          <!-- upload file -->
+          <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+              <div class="modal-body">
+                    <p><input type="file" name="f1"></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input class="btn btn-primary" type="submit" value="upload">
+              </div>
+          </form><!--end form -->
+
+        </div>
+      </div>
+    </div>
+
+
+	<!-- scripts -->
+    <script src="/static/bootstrap/js/jquery-2.2.3.min.js"></script>
+	<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/detaildemo/js/jquery.dataTables.js"></script>
+    <script src="/static/detaildemo/js/theme.js"></script>
+
+
+    <script type="text/javascript">
+        // 解决csrf问题
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        // end csrf
+
+        function RemoveImg(arg){
+            $.post("{% url 'index' %}",
+                    {RemoveImg:arg},
+                    function(callback){
+                        console.log(callback)
+                    });
+        }
+
+        function ShowPic(a){
+            $("#first").addClass("model").css({"background-image": "url('/static/img_dir/" + a + "')"});
+            var navigatorName = "Microsoft Internet Explorer";
+        }
+
+        function MouseLeave(a){
+            $("#first").removeClass("model");
+        }
+
+
+        function f1(){
+            var content = document.title;
+            var firstChar = content.charAt(0);
+            var sub = content.substring(1,content.length);
+            document.title = sub + firstChar
+        }
+        obj = setInterval(f1,800);
+
+        $(document).ready(function() {
+            $('#example').dataTable({
+                "sPaginationType": "full_numbers"
+            });
+        });
+
+        $(function () {
+            // bg switcher
+            var $btns = $(".bg-switch .bg");
+            $btns.click(function (e) {
+                e.preventDefault();
+                $btns.removeClass("active");
+                $(this).addClass("active");
+                var bg = $(this).data("img");
+
+                $("html").css("background-image", "url('/static/detaildemo/img/bgs/" + bg + "')");
+            });
+
+        });
+
+    <!-- 返回顶部 function -->
+        function GoTop(){
+            //返回顶部
+            $(window).scrollTop(0);
+        }
+
+        $(function(){
+            $(window).scroll(function(){
+                //当滚动滑轮时，执行函数体
+
+                //获取当前滑轮滚动的高度
+                var top = $(window).scrollTop();
+
+                if(top>0){
+                    //展示“返回顶部”
+                    $('.back-top').removeClass('hide-top');
+                }else{
+                    //隐藏“返回顶部”
+                    $('.back-top').addClass('hide-top');
+                }
+            });
+        });
+
+        function getimg(arg,file) //另存为存放在服务器上图片到本地的方法
+        {
+            event.returnValue=false;
+            show.window.location.href=arg.src;
+            timer = setInterval(checkload,100)
+        }
+
+        function checkload()
+        {
+            if(show.readyState != "complete")
+                    console.log(show.readyState);
+            {
+                //调用document.execCommand方法，'Saveas'表示打开文件另存为对话框命令
+                show.document.execCommand('saveAs');
+                clearInterval(timer);
+
+            }
+        }
+    </script>
+
+</body>
+</html>

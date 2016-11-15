@@ -1,0 +1,24 @@
+.datatables-page {
+  margin-bottom: 25px;
+}
+
+
+
+.model{
+    z-index:109;
+    position: fixed;
+    left: 380px;
+    right: 200px;
+    top: 100px;
+    bottom: 100px;
+    background-repeat: no-repeat;
+}
+
+.btn-error{
+    padding-left: 420px;
+    padding-top: 180px;
+}
+.btn-exist{
+    padding-left: 320px;
+    padding-top: 180px;
+}

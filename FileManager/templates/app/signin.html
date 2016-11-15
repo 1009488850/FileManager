@@ -1,0 +1,25 @@
+{% extends 'login_base.html' %}
+{% load bootstrap_toolkit %}
+{% block login_box %}
+                {% if password_is_wrong %}
+                    <div class="alert alert-error">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <h4>错误!</h4>用户名或密码错误
+                    </div>
+                {% endif %}
+                <div class="">
+
+                    <form class="form-horizontal" action="" method="post">
+                        {% csrf_token %}
+                        {{ form|as_bootstrap:"horizontal" }}
+
+                        <p>&nbsp;</p>
+                        <p class="form-actions">
+                            <input type="submit" value="登录" class="btn btn-primary">
+                            <a href="{% url 'userinfo' %}"><input type="button" value="忘记密码" class="btn btn-danger"></a>
+                            <a href="{% url 'userinfo' %}"><input type="button" value="新员工？" class="btn btn-success"></a>
+                        </p>
+
+                    </form>
+                </div>
+{% endblock %}

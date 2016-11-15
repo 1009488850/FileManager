@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block tbody %}
+    <table cellpadding="" cellspacing="" border="1" class="" id="example">
+        <thead>
+            <tr role="row">
+                <th tabindex="0" rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew"><strong>Name</strong></th>
+                <th tabindex="0" rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">Author</th>
+                <th tabindex="0" rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">Date</th>
+                <th tabindex="0" rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">ID</th>
+                <th tabindex="0" rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">Control</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">Name</th>
+                <th rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">Author</th>
+                <th rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">Date</th>
+                <th rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">ID</th>
+                <th rowspan="1" colspan="1" style="background-color:cornflowerblue;color: honeydew">Control</th>
+            </tr>
+        </tfoot>
+
+        <tbody>
+        {% if request.user.is_authenticated %}
+            {% for file in filedata reversed %}
+                <tr>
+                    <td style="color: lightslategrey"><a href="" onmouseover="ShowPic('{{ file.upload_file }}')" onmouseout="MouseLeave()">{{ file.upload_file }}</a></td>
+                    <td style="color: lightslategrey">{{ file.upload_user }}</td>
+                    <td style="color: dimgrey">{{ file.upload_date|date:"Y-m-d H:i:s" }}</td>
+                    <td class="center" style="color: dimgrey">{{ file.id }}</td>
+                    <td class="center">
+                    {% if perm_dic_ret.1 %}
+                        <a class="btn btn-success glyphicon glyphicon-download-alt" href="/static/img_dir/{{ file.upload_file }}" download=""></a>
+                    {% else %}
+                        <a disabled="disabled" class="btn btn-success glyphicon glyphicon-download-alt"></a>
+                    {% endif %}
+
+                    {% if perm_dic_ret.0 %}
+                        <a href="" data-toggle="modal" data-target="#{{ file.id }}" class="btn btn-warning glyphicon glyphicon-trash"></a>
+                    {% else %}
+                        <a disabled="disabled" class="btn btn-warning glyphicon glyphicon-trash"></a>
+                    {% endif %}
+                    </td>
+
+                        <!--  确认删除文件模态框-->
+                    <div class="modal fade" id="{{ file.id }}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="mySmallModalLabel">Modal title</h4>
+                          </div>
+                          <div class="modal-body" style="">
+                            <h1>确认要删除该图片吗 ...</h1>
+                          </div>
+                          <div class="modal-footer">
+
+                            <button type="button" class="btn btn-default" data-dismiss="modal">否</button>
+                            <a type="button" href="{% url 'index' %}" class="btn btn-primary" onclick="RemoveImg('{{ file.upload_file }}')">是</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end modal -->
+                </tr>
+            {% endfor %}
+        {% else %}
+            {% for file in filedata reversed %}
+                <tr>
+                    <td style="color: #1c94c4"><strong>{{ file.upload_file }}</strong></td>
+                    <td style="color: lightslategrey">{{ file.upload_user }}</td>
+                    <td style="color: dimgrey">{{ file.upload_date }}</td>
+                    <td class="center" style="color: dimgrey">{{ file.id }}</td>
+                    <td class="center">
+                        <p disabled="disabled" href="" class="btn btn-success glyphicon glyphicon-download-alt"></p>
+                        <p disabled="disabled" href=""  class="btn btn-warning glyphicon glyphicon-trash"></p>
+                    </td>
+                </tr>
+
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+{% endblock %}
+

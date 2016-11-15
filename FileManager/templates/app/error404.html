@@ -1,0 +1,26 @@
+
+{% extends 'base.html' %}
+{% block tbody %}
+    <div id="content-header">
+      <div id="breadcrumb"></div>
+        <h1>Error Page</h1>
+    </div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+              <div class="btn-exist">
+                  <h2>管理列表中已经存在该文件了 ...</h2>
+                  <h3>继续上传或删除</h3>
+                   </br>
+                    </br>
+
+                  <a class="btn btn-warning btn-big "  href="{% url 'index' %}">Back to last page</a> </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Footer-part-->
+
+{% endblock %}

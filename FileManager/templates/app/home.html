@@ -1,0 +1,51 @@
+
+{% extends 'base.html' %}
+{% block uploadfile %}
+{% endblock %}
+    {% block window %}
+    <!-- 窗体左侧菜单栏 -->
+    <div id="sidebar-nav">
+        <ul id="dashboard-menu">
+             <li class="active">
+                <a class="dropdown-toggle" href="{% url 'home' %}">
+                    <div class="pointer">
+                        <div class="arrow"></div>
+                        <div class="arrow_border"></div>
+                    </div>
+                    <i class="icon-home"></i>
+
+                    <span>Home</span>
+                    <i class="icon-chevron-down"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'index' %}">
+                    <i class="icon-th-large"></i>
+                    <span>Table</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- end -->
+    {% endblock %}
+{% block tbody %}
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="widget-box">
+              <div class="btn-exist">
+                  <h2>欢迎使用丝路通集团文件管理系统 ...</h2>
+
+                   </br>
+                    </br>
+
+                  <a class="btn btn-warning btn-big "  href="{% url 'index' %}">进入主页</a>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Footer-part-->
+
+{% endblock %}
